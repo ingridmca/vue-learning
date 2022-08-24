@@ -1,20 +1,30 @@
 <template>
-  <div class="about">
+  <div>
     <h1>Home Page</h1>
-    <div>{{ products }}</div>
+    <div v-for="product in products" :key="product.id" class="cards">
+      <ProductLayout :product="product" />
+    </div>
   </div>
 </template>
 <script>
 import { getProducts } from "@/services/ProductService";
+import ProductLayout from "@/components/ProductLayout.vue";
 
 export default {
-  created() {
-    getProducts().then((response) => (this.products = response));
+  async created() {
+    const response = await getProducts();
+    this.products = response;
   },
   data() {
     return {
       products: [],
     };
   },
+  components: { ProductLayout },
 };
 </script>
+<style>
+.cards {
+  display: flex;
+}
+</style>
